@@ -16,7 +16,7 @@ public class ExcelDataService {
     private final Map<String, String> studentData = new HashMap<>();
     public ExcelDataService() throws IOException {
         // Replace "path/to/your/file.xlsx" with the actual path
-        FileInputStream file = new FileInputStream("C:\\Users\\BaSant\\Downloads\\StudentsData.xlsx");
+        FileInputStream file = new FileInputStream("studentsList.xlsx");
         Workbook workbook = new XSSFWorkbook(file);
         Sheet sheet = workbook.getSheetAt(0);
 
@@ -28,7 +28,7 @@ public class ExcelDataService {
             }
         String nationalId = row.getCell(1).getStringCellValue(); // Assuming National ID is in column B
 
-        String acceptanceStatus = row.getCell(2).getStringCellValue(); // Assuming Acceptance Status is in column C
+        String acceptanceStatus = row.getCell(7).getStringCellValue(); // Assuming Acceptance Status is in column C
         studentData.put(nationalId, acceptanceStatus);
     }
         workbook.close();
