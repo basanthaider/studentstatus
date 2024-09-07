@@ -12,8 +12,12 @@ public class AcceptanceStatusController {
     private ExcelDataService excelDataService;
 
     @GetMapping("/acceptance-status/{nationalId}")
-    public ResponseEntity<String> getAcceptanceStatus(@PathVariable String nationalId) {
-        String acceptanceStatus = excelDataService.getAcceptanceStatus(nationalId);
-        return ResponseEntity.ok(acceptanceStatus);
+    public ResponseEntity<String> getStudentDetails(@PathVariable String nationalId) {
+        try {
+            String studentDetails = excelDataService.getStudentDetails(nationalId);
+            return ResponseEntity.ok(studentDetails);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An error occurred while retrieving student details.");
+        }
     }
 }

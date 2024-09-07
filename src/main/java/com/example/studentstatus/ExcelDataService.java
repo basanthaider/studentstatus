@@ -1,20 +1,16 @@
 package com.example.studentstatus;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @Service
 public class ExcelDataService {
-    private final Map<String, String> studentData = new HashMap<>();
-    public ExcelDataService() throws IOException {
+    public String getStudentDetails(String nationalId) throws IOException {
         // Replace "path/to/your/file.xlsx" with the actual path
         FileInputStream file = new FileInputStream("studentsList.xlsx");
         Workbook workbook = new XSSFWorkbook(file);
@@ -23,19 +19,28 @@ public class ExcelDataService {
         for (Row row : sheet) {
             if (row.getRowNum() == 0) {
                 continue;
-
-
+                // Skip header row
             }
-        String nationalId = row.getCell(1).getStringCellValue(); // Assuming National ID is in column B
 
-        String acceptanceStatus = row.getCell(7).getStringCellValue(); // Assuming Acceptance Status is in column C
-        studentData.put(nationalId, acceptanceStatus);
-    }
+            Cell idCell = row.getCell(1); // Assuming National ID is in column A
+            Cell nameCell = row.getCell(0); // Assuming name is in column B
+            Cell statusCell = row.getCell(2); // Assuming Acceptance Status is in column C
+
+            if (idCell != null && idCell.getCellType() == CellType.STRING) {
+                String currentNationalId = idCell.getStringCellValue();
+                if (currentNationalId.equals(nationalId)) {
+                    String name = (nameCell != null) ? nameCell.getStringCellValue() : "";
+                    String status = (statusCell != null) ? statusCell.getStringCellValue() : "Not Found";
+                    workbook.close();
+                    file.close();
+                    return String.format("%s - %s - %s", name, currentNationalId, status);
+                }
+            }
+        }
+
         workbook.close();
         file.close();
+        return "Student Not Found";
+    }
 }
 
-public String getAcceptanceStatus(String nationalId) {
-    return studentData.getOrDefault(nationalId, "Not Found");
-}
-}
