@@ -22,8 +22,8 @@ public class ExcelDataService {
                 // Skip header row
             }
 
-            Cell idCell = row.getCell(1); // Assuming National ID is in column A
-            Cell nameCell = row.getCell(0); // Assuming name is in column B
+            Cell idCell = row.getCell(1); // Assuming National ID is in column B
+            Cell nameCell = row.getCell(0); // Assuming name is in column A
             Cell statusCell = row.getCell(2); // Assuming Acceptance Status is in column C
 
             if (idCell != null && idCell.getCellType() == CellType.STRING) {
