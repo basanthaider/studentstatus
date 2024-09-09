@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 public class AcceptanceStatusController {
 
@@ -12,10 +14,15 @@ public class AcceptanceStatusController {
     private ExcelDataService excelDataService;
 
     @GetMapping("/acceptance-status/{nationalId}")
-    public ResponseEntity<String> getStudentDetails(@PathVariable String nationalId) {
+    public ResponseEntity<Object> getStudentDetails(@PathVariable String nationalId) {
         try {
-            String studentDetails = excelDataService.getStudentDetails(nationalId);
-            return ResponseEntity.ok(studentDetails);
+            StudentModel student = excelDataService.getStudentDetails(nationalId);
+            if (student == null) {
+                return ResponseEntity.ok(new HashMap<String, String>() {{
+                    put("message", "Student Not Found");
+                }});
+            }
+            return ResponseEntity.ok(student);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("An error occurred while retrieving student details.");
         }

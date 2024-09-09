@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Service
 public class ExcelDataService {
-    public String getStudentDetails(String nationalId) throws IOException {
+    public StudentModel getStudentDetails(String nationalId) throws IOException {
         // Replace "path/to/your/file.xlsx" with the actual path
         FileInputStream file = new FileInputStream("studentsList.xlsx");
         Workbook workbook = new XSSFWorkbook(file);
@@ -33,14 +33,14 @@ public class ExcelDataService {
                     String status = (statusCell != null) ? statusCell.getStringCellValue() : "Not Found";
                     workbook.close();
                     file.close();
-                    return String.format("%s - %s - %s", name, currentNationalId, status);
+                    return new StudentModel(currentNationalId, name, status);
                 }
             }
         }
 
         workbook.close();
         file.close();
-        return "Student Not Found";
+        return null;
     }
 }
 
