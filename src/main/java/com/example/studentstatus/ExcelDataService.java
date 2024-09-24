@@ -35,7 +35,6 @@ public class ExcelDataService {
                 } else {
                     currentNationalId = idCell.toString(); // Convert other cell types to string
                 }
-                 /*= idCell.getStringCellValue();*/
                 if (currentNationalId.equals(nationalId)) {
                     String name = (nameCell != null) ? nameCell.getStringCellValue() : "";
                     String status = (statusCell != null) ? statusCell.getStringCellValue() : "Not Found";
