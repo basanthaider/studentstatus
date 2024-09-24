@@ -26,8 +26,16 @@ public class ExcelDataService {
             Cell nameCell = row.getCell(0); // Assuming name is in column A
             Cell statusCell = row.getCell(2); // Assuming Acceptance Status is in column C
 
-            if (idCell != null && idCell.getCellType() == CellType.STRING) {
-                String currentNationalId = idCell.getStringCellValue();
+            if (idCell != null ) {
+                String currentNationalId;
+                if (idCell.getCellType() == CellType.STRING) {
+                    currentNationalId = idCell.getStringCellValue();
+                } else if (idCell.getCellType() == CellType.NUMERIC) {
+                    currentNationalId = String.valueOf((long) idCell.getNumericCellValue());
+                } else {
+                    currentNationalId = idCell.toString(); // Convert other cell types to string
+                }
+                 /*= idCell.getStringCellValue();*/
                 if (currentNationalId.equals(nationalId)) {
                     String name = (nameCell != null) ? nameCell.getStringCellValue() : "";
                     String status = (statusCell != null) ? statusCell.getStringCellValue() : "Not Found";
